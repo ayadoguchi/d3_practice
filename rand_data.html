@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>D3 TEST　ランダムなグラフ</title>
+    <link href="_normalize.css" rel="stylesheet">
+    <script type="text/javascript" src="d3.min.js"></script>
+  </head>
+  <body>
+    <style>
+      .bar {
+        display: inline-block;
+        width: 20px;
+        height: 75px;
+        color: white;
+        margin-right: 1px;
+        background-color: beige;
+        vertical-align: bottom;
+      }
+      .red {
+        background-color: mediumvioletred;
+      }
+      .black {
+        background-color: black;
+      }
+    </style>
+    <div class="bar-wrp"></div>
+
+    <script type="text/javascript">
+      //jsでランダムな配列を作成
+      var dataset = [];
+      for(var i = 0;i < 25; i++){
+        var newNumber = Math.random() * 30;
+        dataset.push(newNumber);
+      }
+      //固定配列
+//      var dataset = [25, 7, 5, 26, 11, 8, 25, 14, 23, 19, 14, 11, 22, 29, 11, 22, 29, 11, 13, 12, 17, 18, 10, 24, 18, 25, 9, 3];
+      d3.select(".bar-wrp").selectAll("p")//この時はまだpは存在していないので空セレクションが返ってくる
+          .data(dataset)//データの値の個数を数えて解析する
+          .enter()//データにバインドされた要素を新規作成する
+          .append("p")//DOMに要素を追加して次のチェイン（.selectAll("p")へ要素のリファレンスを渡す）appendの前に.text .attrなどをしても空のセレクションに渡している事になるから反映されない
+          .text(function(d) {
+            return d;
+          })
+          .attr("class", function(d) {
+            if(d > 15) {
+              return "red";
+            } else {
+              return "black";
+            }
+          })
+          .classed("bar", true)// trueならclass追加 falseならclass削除
+          .style("height", function(d){//inline styleを追加する
+            var barHeight = d * 5;
+            return barHeight + "px";
+          })
+    </script>
+  </body>
+</html>
